@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('penjualan_id');
             $table->unsignedBigInteger('produk_id');
             $table->decimal('informasi_harga');
-            $table->integer('jumlah_produk');
+            $table->integer('jumlah_produk'); ;
             $table->timestamps();
         });
     }
