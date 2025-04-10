@@ -16,4 +16,14 @@ class Penjualan extends Model
         'tanggal_penjualan',
         'pengguna_id',
     ];
+
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'pengguna_id', 'pengguna_id');
+    }
+
+    public function details()
+    {
+    return $this->hasMany(Detail::class, 'penjualan_id', 'penjualan_id');
+    }
 }

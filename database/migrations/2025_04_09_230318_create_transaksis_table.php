@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penggunas', function (Blueprint $table) {
-            $table->id('pengguna_id');
-            $table->unsignedBigInteger('user_id');
+        Schema::create('transaksis', function (Blueprint $table) {
+            $table->id('transaksi_id');
+            $table->enum('jenis', ['pemasukan', 'pengeluaran']);
+            $table->string('keterangan');
+            $table->integer('jumlah');
+            $table->date('tanggal');
             $table->timestamps();
-        
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
-        
     }
 
     /**
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penggunas');
+        Schema::dropIfExists('transaksis');
     }
 };

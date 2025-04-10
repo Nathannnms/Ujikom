@@ -3,15 +3,13 @@
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('test');
+    return view('login');
 });
 
-Route::get('/test', function() {
-    return view ('test');
-})->name('test');
 
 // Route untuk menu Produk
 Route::get('/iniproduk', [ProdukController::class, 'index'])->name('produk.index');
@@ -31,9 +29,16 @@ Route::get('/penjualan.edit/{id}', [PenjualanController::class, 'edit'])->name('
 Route::post('/penjualan.update/{id}', [PenjualanController::class, 'update'])->name('penjualan.update');
 Route::delete('/penjualan/{produk}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
 Route::put('penjualan/{id}', [PenjualanController::class, 'update'])->name('penjualan.update');
+Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
+
+
+Route::get('/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
+Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
+Route::get('/initransaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
 
 
 Route::resource('produk', ProdukController::class);
+
 
 // Route untuk pengaturan login 
 Route::middleware('auth')->group(function () {

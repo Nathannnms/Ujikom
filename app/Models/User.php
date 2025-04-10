@@ -48,7 +48,8 @@ class User extends Authenticatable
 
     public function pengguna()
     {
-        return $this->hasOne(Pengguna::class, 'nama_pengguna', 'name');
+        // return $this->hasOne(Pengguna::class, 'nama_pengguna', 'name');
+        return $this->hasOne(Pengguna::class, 'user_id');
     }
 }
 

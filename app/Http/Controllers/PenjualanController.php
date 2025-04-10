@@ -5,84 +5,105 @@ namespace App\Http\Controllers;
 use App\Models\Pengguna;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
-
+use App\Models\Detail;
+use App\Models\Produk;
+use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $penjualans =  Penjualan::all();
-        return view('penjualan.index', compact('penjualans'));
+        $penjualans = Penjualan::all();
+        return view('inipenjualan', compact('penjualans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $penggunas = Pengguna::all();
-        $penjualans = Penjualan::all();
-        return view('penjualan.create', compact('penjualans'));
+        $penggunas = Pengguna::with('user')->get();
+        $produks = Produk::all(); 
+        return view('penjualan.create', compact('penggunas', 'produks'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        $request ->validate ([
-            'total_harga' => 'required',
-            'tanggal_penjualan' => 'required',
-            'pengguna_id' => 'required',
-        ]);
+{
+    $request->validate([
+        'total_harga' => 'required|integer',
+        'tanggal_penjualan' => 'required|date',
+        'pengguna_id' => 'required|exists:penggunas,pengguna_id',
+        'produk_id' => 'required|exists:produks,produk_id',
+        'informasi_harga' => 'required|numeric',
+        'jumlah_produk' => 'required|integer|min:1',
+    ]);
 
-        Penjualan::create($request->all());
-        return redirect()->route('penjualan.index')->with('success', 'Data penjualan berhasil ditambahkan');
+    // Simpan penjualan dulu dan ambil objeknya
+    $penjualan = Penjualan::create([
+        'total_harga' => $request->total_harga,
+        'tanggal_penjualan' => $request->tanggal_penjualan,
+        'pengguna_id' => $request->pengguna_id,
+    ]);
+
+    // Baru bisa akses penjualan_id
+    Detail::create([
+        'penjualan_id' => $penjualan->penjualan_id,
+        'produk_id' => $request->produk_id,
+        'informasi_harga' => $request->informasi_harga,
+        'jumlah_produk' => $request->jumlah_produk,
+    ]);
+
+    return redirect()->route('penjualan.index')->with('success', 'Data penjualan berhasil ditambahkan');
+}
+    public function show($id)
+    {
+        $penjualan = Penjualan::with('details.produk')->findOrFail($id);
+        return view('penjualan.show', compact('penjualan'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Penjualan $penjualan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        $penjualans = Penjualan::findordfail($id);
-        return view('penjualan.edit', compact('penjualans'));
-
+        $penjualan = Penjualan::with('details')->findOrFail($id); 
+        $penggunas = Pengguna::with('user')->get();
+        $produks = Produk::all(); 
+    
+        return view('penjualan.edit', compact('penjualan', 'penggunas', 'produks'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
-    {
-        $penjualans = Penjualan::findordfail($id);
-        $request -> validate ([
-            'total_harga' => 'required|integer',
-            'tanggal_penjualan' => 'required|date',
-            'pengguna_id' => 'required|integer',
-        ]);
+{
+    $request->validate([
+        'total_harga' => 'required|integer',
+        'tanggal_penjualan' => 'required|date',
+        'pengguna_id' => 'required|exists:penggunas,pengguna_id',
+        'produk_id' => 'required|exists:produks,produk_id',
+        'informasi_harga' => 'required|numeric',
+        'jumlah_produk' => 'required|integer|min:1',
+    ]);
 
-        Penjualan::update($request->all());
-        return redirect()->view('penjualan_index')->with('success', 'Data penjualan berhasil diubah');
-    }
+    $penjualan = Penjualan::findOrFail($id);
+    $penjualan->update([
+        'total_harga' => $request->total_harga,
+        'tanggal_penjualan' => $request->tanggal_penjualan,
+        'pengguna_id' => $request->pengguna_id,
+    ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Penjualan $penjualans)
+    // Update detail (dihapus & dibuat ulang, atau bisa di-update langsung jika lebih kompleks)
+    $penjualan->details()->delete();
+
+    Detail::create([
+        'penjualan_id' => $penjualan->penjualan_id,
+        'produk_id' => $request->produk_id,
+        'informasi_harga' => $request->informasi_harga,
+        'jumlah_produk' => $request->jumlah_produk,
+    ]);
+
+    return redirect()->route('penjualan.index')->with('success', 'Data penjualan berhasil diubah');
+}
+
+
+    public function destroy($id)
     {
-        $penjualans->delete();
-        return redirect()->view('penjualan.index')->with('success', 'Data penjualan berhasil dihapus');
+        $penjualan = Penjualan::findOrFail($id);
+        $penjualan->delete();
+
+        return redirect()->route('penjualan.index')->with('success', 'Data penjualan berhasil dihapus');
     }
 }
