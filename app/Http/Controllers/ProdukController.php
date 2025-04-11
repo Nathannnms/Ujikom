@@ -20,11 +20,10 @@ class ProdukController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($User)
+    public function create()
     {
-        $users = User::all();
         $produks = Produk::all();
-        return view('produk.create', compact('produks'));
+        return view('produk.create', compact('produks', ));
     }
 
     /**

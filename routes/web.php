@@ -7,7 +7,7 @@ use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('login');
+    return view('auth.login');
 });
 
 
@@ -35,7 +35,12 @@ Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penju
 Route::get('/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
 Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
 Route::get('/initransaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'struk'])->name('transaksi.struk');
+Route::get('/trans', [TransaksiController::class, 'trans'])->name('trans');
 
+
+
+// Route::get('/trans', [TransaksiController::class, 'trans'])->name('trans.index');
 
 Route::resource('produk', ProdukController::class);
 
