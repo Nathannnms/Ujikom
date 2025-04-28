@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,13 +16,15 @@ class Penjualan extends Model
         'pengguna_id',
     ];
 
+    // Relasi ke model Pengguna
     public function pengguna()
     {
         return $this->belongsTo(Pengguna::class, 'pengguna_id', 'pengguna_id');
     }
 
+    // Relasi ke model Detail
     public function details()
     {
-    return $this->hasMany(Detail::class, 'penjualan_id', 'penjualan_id');
+        return $this->hasMany(Detail::class, 'penjualan_id', 'penjualan_id');
     }
 }

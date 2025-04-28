@@ -11,6 +11,15 @@
         <hr>
         <p><strong>Keterangan:</strong></p>
         <p>{{ $transaksi->keterangan }}</p>
+        @if($transaksi->penjualan)
+            <hr>
+            <p><strong>Detail Produk:</strong></p>
+            <ul>
+            @foreach($transaksi->penjualan->details as $detail)
+            <li>{{ $detail->produk->nama_produk }} x{{ $detail->jumlah }} - Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</li>
+             @endforeach
+        </ul>
+        @endif
         <hr>
         <p class="text-center">Terima kasih 🙏</p>
 

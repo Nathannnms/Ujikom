@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Boas',
                 'password' => Hash::make('boas123'),
+                'role' => 'admin',
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
             ]

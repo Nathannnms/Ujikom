@@ -11,15 +11,27 @@ use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $penjualans = Penjualan::all();
+        $query = Penjualan::with('pengguna');
+
+        if ($request->has('cari') && $request->cari != '') {
+            $cari = $request->cari;
+            $query->whereHas('pengguna', function ($q) use ($cari) {
+                $q->where('nama_pengguna', 'like', '%' . $cari . '%');
+            })->orWhere('penjualan_id', 'like', '%' . $cari . '%')
+              ->orWhere('tanggal_penjualan', 'like', '%' . $cari . '%');
+        }
+    
+        $penjualans = $query->get();
+    
         return view('inipenjualan', compact('penjualans'));
     }
 
     public function create()
     {
         $penggunas = Pengguna::with('user')->get();
+        // dd($penggunas);
         $produks = Produk::all(); 
         return view('penjualan.create', compact('penggunas', 'produks'));
     }

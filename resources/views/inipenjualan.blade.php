@@ -9,7 +9,14 @@
         
 
         <div class="container mt-5">
-        <h1>Produk</h1>
+        <h1>Penjualan</h1>
+        <br>
+        <form action="{{ route('penjualan.index') }}" method="GET" class="form-inline mb-3">
+            <input type="text" name="cari" class="form-control mr-2" placeholder="Cari berdasarkan nama pengguna atau tanggal..." value="{{ request('cari') }}">
+            <button type="submit" class="btn btn-success">Cari</button>
+            <a href="{{ route('penjualan.index') }}" class="btn btn-secondary ml-2">Reset</a>
+        </form>
+
         <a href="{{ route('penjualan.create' )}}" class="btn btn-primary mb-3">Tambah Data</a>
         <table class="table">
             <thead>

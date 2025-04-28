@@ -10,7 +10,12 @@ class Transaksi extends Model
     protected $table = 'transaksis';
     protected $primaryKey = 'transaksi_id';
 
-    public $incrementing = true; // set ke false kalau pakai UUID atau string
-    protected $keyType = 'int'; // atau 'string' kalau pakai UUID
-    protected $fillable = ['jenis', 'keterangan', 'jumlah', 'tanggal'];
+    public $incrementing = true; 
+    protected $keyType = 'int'; 
+    protected $fillable = ['jenis', 'keterangan', 'jumlah', 'tanggal', 'penjualan_id'];
+
+    public function penjualan()
+    {
+    return $this->belongsTo(Penjualan::class, 'penjualan_id'); 
+    }
 }

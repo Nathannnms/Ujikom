@@ -26,11 +26,16 @@
   </head>
 
   <body class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
-    @include('layouts.partial.header')
+  @include('layouts.partial.header')
 
+  <div class="relative min-h-screen">
+
+    <main class="pl-64 pt-6 px-6"> <!-- Disini main content -->
       @yield('content')
+    </main>
+  </div>
 
-    @include('layouts.partial.footer')
-  </body>
+  @include('layouts.partial.footer')
+</body>
   @include('layouts.partial.script')
 </html>

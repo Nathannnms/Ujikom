@@ -8,7 +8,7 @@ class Pengguna extends Model
 {
     protected $table = 'penggunas';
     protected $primaryKey = 'pengguna_id';
-    protected $fillable = ['nama_pengguna', 'password', 'user_id'];
+    protected $fillable = ['user_id'];
     public $timestamps = true;
 
     public function user()

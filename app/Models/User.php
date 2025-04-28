@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'nama_pengguna',
     ];
 
     /**
@@ -51,5 +53,11 @@ class User extends Authenticatable
         // return $this->hasOne(Pengguna::class, 'nama_pengguna', 'name');
         return $this->hasOne(Pengguna::class, 'user_id');
     }
+
+    public function pelanggan()
+    {
+        return $this->hasOne(Pelanggan::class, 'user_id'); // pastikan kolom relasi benar
+    }
+
 }
 

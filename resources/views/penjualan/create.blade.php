@@ -23,15 +23,18 @@
 
             <div class="form-group">
                 <label for="pengguna_id">Admin</label>
-                <select name="pengguna_id" id="pengguna_id" class="form-control" required>
-                    <option value="">-- Pilih Admin --</option>
-                    @foreach ($penggunas as $pengguna)
-                        <option value="{{ $pengguna->pengguna_id }}">
-                            {{ $pengguna->user->name }}
-                        </option>
+                <select name="pengguna_id" id="pengguna_id" class="form-control">
+                    <option value="">Pilih Pengguna</option>
+                    @foreach($penggunas as $pengguna)
+                    
+                    <option value="{{ $pengguna->pengguna_id }}">
+                        {{ $pengguna->user->nama_pengguna ?? $pengguna->user->name ?? 'Tanpa Nama' }}
+                    </option>
+                    
                     @endforeach
                 </select>
             </div>
+            
 
             
             <hr>

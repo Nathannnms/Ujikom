@@ -31,7 +31,7 @@
                 @foreach ($penggunas as $pengguna)
                     <option value="{{ $pengguna->pengguna_id }}"
                         {{ $pengguna->pengguna_id == $penjualan->pengguna_id ? 'selected' : '' }}>
-                        {{ $pengguna->nama_pengguna }}
+                        {{ $pengguna->user->nama_pengguna ?? $pengguna->user->name ?? 'Tanpa Nama' }}
                     </option>
                 @endforeach
             </select>
